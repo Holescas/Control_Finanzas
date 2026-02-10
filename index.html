@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión Financiera PRO</title>
+    <title>Gestión Financiera</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,129 +12,126 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
-        .view-content { animation: fadeIn 0.2s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body class="bg-gray-100 flex flex-col min-h-screen">
 
 <div id="user-id-container" class="sticky top-0 z-50 bg-white shadow-sm p-2 text-center text-xs text-gray-400">
-    <span id="user-id-text">Sincronizando...</span>
+    <span id="user-id-text">Sincronizando con la nube...</span>
 </div>
 
-<div id="app-container" class="flex-1 container mx-auto p-4 pb-24">
+<div id="app-container" class="flex-1 container mx-auto p-4 sm:p-6 lg:p-8 relative">
 
-    <div id="home-view" class="view-content">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Mi Resumen</h1>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-green-500">
-                <div class="text-sm text-gray-500 font-medium">Ingresos Mes</div>
-                <div class="text-2xl font-bold text-green-600" id="total-income">S/ 0.00</div>
+    <div id="home-view" class="view-content relative">
+        <div class="flex flex-col items-center justify-center space-y-6">
+            <h1 class="text-3xl font-bold text-gray-800">Control de Gastos</h1>
+            <div class="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white rounded-2xl shadow-sm p-6 flex flex-col items-center border-b-4 border-green-500">
+                    <div class="text-2xl font-bold text-green-600" id="total-income">0.00</div>
+                    <div class="text-sm text-gray-500 mt-1 uppercase font-bold tracking-tighter">Ingresos</div>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm p-6 flex flex-col items-center border-b-4 border-red-500">
+                    <div class="text-2xl font-bold text-red-600" id="total-expense">0.00</div>
+                    <div class="text-sm text-gray-500 mt-1 uppercase font-bold tracking-tighter">Egresos</div>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm p-6 flex flex-col items-center border-b-4 border-blue-500">
+                    <div class="text-2xl font-bold text-blue-600" id="total-balance">0.00</div>
+                    <div class="text-sm text-gray-500 mt-1 uppercase font-bold tracking-tighter">Balance</div>
+                </div>  
             </div>
-            <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-red-500">
-                <div class="text-sm text-gray-500 font-medium">Egresos Mes</div>
-                <div class="text-2xl font-bold text-red-600" id="total-expense">S/ 0.00</div>
+            
+            <div class="w-full max-w-4xl mt-6">
+                <div class="flex justify-end mb-3">
+                    <button id="add-transaction-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-xl shadow-lg transition flex items-center gap-2">
+                        <i class="fas fa-plus"></i> Registrar
+                    </button>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm p-6 sm:p-8">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Últimos Movimientos</h2>
+                    <div id="transaction-list" class="space-y-4"></div>
+                </div>
             </div>
-            <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-blue-500">
-                <div class="text-sm text-gray-500 font-medium">Balance Actual</div>
-                <div class="text-2xl font-bold text-blue-600" id="total-balance">S/ 0.00</div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-2xl shadow-sm p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800">Últimos Movimientos</h2>
-                <button id="add-transaction-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2">
-                    <i class="fas fa-plus"></i> Nuevo
-                </button>
-            </div>
-            <div id="transaction-list" class="space-y-3"></div>
         </div>
     </div>
-
-    <div id="prestamos-view" class="view-content hidden text-center">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Préstamos</h1>
-        <div class="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow-sm mb-8 text-left">
-            <form id="loan-form" class="space-y-4">
-                <input type="hidden" id="edit-loan-id">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="col-span-2">
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Operación</label>
-                        <select id="loan-operation" class="w-full p-2.5 border rounded-xl bg-gray-50">
-                            <option value="prestamo">Nuevo Préstamo</option>
-                            <option value="pago">Registrar Pago</option>
-                        </select>
-                    </div>
-                    <div class="col-span-2">
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Banco / Entidad</label>
-                        <select id="loan-bank" class="w-full p-2.5 border rounded-xl bg-gray-50">
-                            <option value="BCP">BCP</option>
-                            <option value="Interbank">Interbank</option>
-                            <option value="BBVA">BBVA</option>
-                            <option value="Scotiabank">Scotiabank</option>
-                            <option value="Saga Falabella">Saga Falabella</option>
-                            <option value="Ripley">Ripley</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Monto Cuota</label>
-                        <input type="number" id="loan-installment-amount" step="0.01" required class="w-full p-2.5 border rounded-xl bg-gray-50">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Moneda</label>
-                        <select id="loan-currency" class="w-full p-2.5 border rounded-xl bg-gray-50">
-                            <option value="PEN">Soles</option>
-                            <option value="USD">Dólares</option>
-                        </select>
-                    </div>
-                    <div id="loan-ext-fields" class="col-span-2 grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Monto Total</label>
-                            <input type="number" id="loan-total-amount" step="0.01" class="w-full p-2.5 border rounded-xl bg-gray-50">
+    
+    <div id="prestamos-view" class="view-content hidden">
+        <div class="flex flex-col items-center justify-center space-y-6">
+            <h1 class="text-3xl font-bold text-gray-800">Préstamos Personales</h1>
+            <div class="w-full max-w-4xl bg-white rounded-2xl shadow-sm p-6 sm:p-8">
+                <form id="loan-form" class="space-y-4">
+                    <input type="hidden" id="edit-loan-id">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Operación</label>
+                            <select id="loan-operation" required class="w-full p-2.5 border rounded-xl bg-gray-50">
+                                <option value="prestamo">Nuevo Préstamo</option>
+                                <option value="pago">Registrar Pago</option>
+                            </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">TCEA %</label>
-                            <input type="number" id="loan-tea" step="0.01" class="w-full p-2.5 border rounded-xl bg-gray-50">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Banco</label>
+                            <select id="loan-bank" required class="w-full p-2.5 border rounded-xl bg-gray-50">
+                                <option value="BCP">BCP</option>
+                                <option value="Interbank">Interbank</option>
+                                <option value="BBVA">BBVA</option>
+                                <option value="Scotiabank">Scotiabank</option>
+                                <option value="Otro">Otro Banco</option>
+                            </select>
                         </div>
-                        <div class="col-span-2">
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">N° Cuotas</label>
-                            <input type="number" id="loan-installments" class="w-full p-2.5 border rounded-xl bg-gray-50">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Monto Cuota</label>
+                            <input type="number" id="loan-installment-amount" step="0.01" required class="w-full p-2.5 border rounded-xl bg-gray-50">
+                        </div>
+                        <div id="loan-detail-fields" class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Monto Total</label>
+                                <input type="number" id="loan-total-amount" step="0.01" class="w-full p-2.5 border rounded-xl bg-gray-50">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">N° Cuotas</label>
+                                <input type="number" id="loan-installments" class="w-full p-2.5 border rounded-xl bg-gray-50">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">TCEA %</label>
+                                <input type="number" id="loan-tea" step="0.01" class="w-full p-2.5 border rounded-xl bg-gray-50">
+                            </div>
+                        </div>
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Fecha</label>
+                            <input type="date" id="loan-date" required class="w-full p-2.5 border rounded-xl bg-gray-50">
                         </div>
                     </div>
-                    <div class="col-span-2">
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Fecha</label>
-                        <input type="date" id="loan-date" required class="w-full p-2.5 border rounded-xl bg-gray-50">
+                    <div class="flex gap-2 justify-end">
+                        <button type="button" id="cancel-edit-loan" class="hidden px-4 py-2 bg-gray-200 text-gray-600 rounded-xl">Cancelar</button>
+                        <button type="submit" id="save-loan-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg">Guardar</button>
                     </div>
-                </div>
-                <div class="flex gap-2 pt-2">
-                    <button type="submit" id="save-loan-btn" class="flex-1 bg-blue-600 text-white font-bold py-3 rounded-xl shadow-md">Guardar</button>
-                    <button type="button" id="cancel-edit-loan" class="hidden px-4 bg-gray-200 text-gray-600 rounded-xl">Cancelar</button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div id="loan-list" class="w-full max-w-4xl space-y-4"></div>
         </div>
-        <div id="loan-list" class="max-w-xl mx-auto space-y-3 text-left"></div>
     </div>
-
+    
     <div id="dashboard-view" class="view-content hidden">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Estadísticas</h1>
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Estadísticas</h1>
         
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div class="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
             <div class="bg-blue-900 text-white p-5 rounded-2xl shadow-lg text-center">
-                <div class="text-[10px] uppercase opacity-70">Top Gasto</div>
+                <div class="text-[10px] uppercase opacity-60">Top Categoría</div>
                 <div id="dash-top-category" class="text-lg font-bold">-</div>
             </div>
             <div class="bg-blue-800 text-white p-5 rounded-2xl shadow-lg text-center">
-                <div class="text-[10px] uppercase opacity-70">Promedio Diario</div>
+                <div class="text-[10px] uppercase opacity-60">Promedio Diario</div>
                 <div id="dash-avg-daily" class="text-lg font-bold">0.00</div>
             </div>
             <div class="bg-blue-700 text-white p-5 rounded-2xl shadow-lg text-center">
-                <div class="text-[10px] uppercase opacity-70">Ahorro</div>
+                <div class="text-[10px] uppercase opacity-60">Ahorro</div>
                 <div id="dash-savings-rate" class="text-lg font-bold">0%</div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-white p-6 rounded-2xl shadow-sm">
                 <h3 class="font-bold text-gray-700 mb-4">Gastos por Categoría</h3>
                 <div class="h-64"><canvas id="categoryChart"></canvas></div>
@@ -147,21 +144,25 @@
     </div>
 
     <div id="historial-view" class="view-content hidden">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Historial Completo</h1>
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Historial</h1>
         <div id="historial-transaction-list" class="max-w-2xl mx-auto space-y-4"></div>
     </div>
+
 </div>
 
-<div id="transaction-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 hidden z-[100]">
-    <div class="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl">
-        <h3 class="text-xl font-bold text-gray-800 mb-4">Nueva Operación</h3>
+<div id="transaction-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden z-[100]">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md modal-content p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-gray-800">Nueva Operación</h3>
+            <button id="close-modal-btn" class="text-gray-400 text-2xl hover:text-gray-600">&times;</button>
+        </div>
         <form id="transaction-form" class="space-y-4">
             <div class="flex gap-2 p-1 bg-gray-100 rounded-xl">
-                <label class="flex-1 text-center py-2 rounded-lg cursor-pointer transition has-[:checked]:bg-white has-[:checked]:shadow-sm">
+                <label class="flex-1 text-center py-2 rounded-lg cursor-pointer has-[:checked]:bg-white has-[:checked]:shadow-sm transition">
                     <input type="radio" name="type" value="income" class="hidden"> <span class="text-sm font-bold text-green-600">Ingreso</span>
                 </label>
-                <label class="flex-1 text-center py-2 rounded-lg cursor-pointer transition has-[:checked]:bg-white has-[:checked]:shadow-sm">
-                    <input type="radio" name="type" value="expense" checked class="hidden"> <span class="text-sm font-bold text-red-600">Gasto</span>
+                <label class="flex-1 text-center py-2 rounded-lg cursor-pointer has-[:checked]:bg-white has-[:checked]:shadow-sm transition">
+                    <input type="radio" name="type" value="expense" checked class="hidden"> <span class="text-sm font-bold text-red-600">Egreso</span>
                 </label>
             </div>
             <div class="grid grid-cols-2 gap-4">
@@ -172,8 +173,8 @@
                 <div>
                     <label class="block text-[10px] font-bold text-gray-400 uppercase">Moneda</label>
                     <select id="currency" class="w-full p-2 border-b-2 border-gray-100 outline-none">
-                        <option value="PEN">Soles</option>
-                        <option value="USD">Dólares</option>
+                        <option value="PEN">Soles (S/)</option>
+                        <option value="USD">Dólares ($)</option>
                     </select>
                 </div>
             </div>
@@ -196,8 +197,8 @@
                 <label class="block text-[10px] font-bold text-gray-400 uppercase">Fecha</label>
                 <input type="date" id="transaction-date" required class="w-full p-2 border-b-2 border-gray-100 outline-none">
             </div>
-            <div class="flex gap-3 pt-4">
-                <button type="button" id="cancel-form-btn" class="flex-1 py-3 text-gray-400 font-bold">Cerrar</button>
+            <div class="flex gap-2 pt-4">
+                <button type="button" id="cancel-form-btn" class="flex-1 py-3 bg-gray-100 rounded-2xl font-bold">Cancelar</button>
                 <button type="submit" class="flex-1 py-3 bg-blue-600 text-white rounded-2xl font-bold shadow-lg">Guardar</button>
             </div>
         </form>
@@ -252,30 +253,34 @@
         document.getElementById('transaction-date').valueAsDate = new Date();
     };
     const closeModal = () => { document.getElementById('transaction-modal').classList.add('hidden'); };
+    document.getElementById('close-modal-btn').onclick = closeModal;
     document.getElementById('cancel-form-btn').onclick = closeModal;
 
-    // --- AUTH ---
+    // --- FIREBASE AUTH ---
     onAuthStateChanged(auth, async (user) => {
         if (!user) { await signInAnonymously(auth); return; }
         userId = user.uid;
-        document.getElementById('user-id-text').textContent = `ID Sesión: ${userId.substring(0,8)}...`;
+        document.getElementById('user-id-text').textContent = `ID Sesión Activa: ${userId.substring(0,8)}`;
         
+        // Listener Transacciones
         onSnapshot(collection(db, 'artifacts', appIdVar, 'users', userId, 'transactions'), (snap) => {
             allTransactions = snap.docs.map(d => ({id: d.id, ...d.data()}));
             updateUI();
         });
 
+        // Listener Préstamos
         onSnapshot(collection(db, 'artifacts', appIdVar, 'users', userId, 'loans'), (snap) => {
             allLoans = snap.docs.map(d => ({id: d.id, ...d.data()}));
             renderLoans();
         });
     });
 
-    // --- FORMULARIOS ---
+    // --- GUARDAR TRANSACCIÓN (BOTÓN GUARDAR) ---
     document.getElementById('transaction-form').onsubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // IMPORTANTE: Evita recarga de página
         const amount = parseFloat(document.getElementById('amount').value);
         const type = e.target.type.value;
+        
         const data = {
             description: document.getElementById('description').value,
             amount: type === 'income' ? amount : -amount,
@@ -284,20 +289,25 @@
             date: document.getElementById('transaction-date').value,
             timestamp: serverTimestamp()
         };
-        await addDoc(collection(db, 'artifacts', appIdVar, 'users', userId, 'transactions'), data);
-        closeModal();
-        e.target.reset();
+
+        try {
+            await addDoc(collection(db, 'artifacts', appIdVar, 'users', userId, 'transactions'), data);
+            closeModal();
+            e.target.reset();
+        } catch (err) { console.error("Error al guardar:", err); }
     };
 
+    // --- GUARDAR PRÉSTAMO (BOTÓN GUARDAR) ---
     const loanForm = document.getElementById('loan-form');
     loanForm.onsubmit = async (e) => {
         e.preventDefault();
-        const isPago = document.getElementById('loan-operation').value === 'pago';
         const editId = document.getElementById('edit-loan-id').value;
+        const isPago = document.getElementById('loan-operation').value === 'pago';
+        
         const data = {
             operation: document.getElementById('loan-operation').value,
             bank: document.getElementById('loan-bank').value,
-            currency: document.getElementById('loan-currency').value,
+            currency: "PEN", // Por defecto Soles
             installmentAmount: parseFloat(document.getElementById('loan-installment-amount').value),
             date: document.getElementById('loan-date').value,
             totalAmount: isPago ? null : parseFloat(document.getElementById('loan-total-amount').value),
@@ -305,17 +315,21 @@
             tea: isPago ? null : parseFloat(document.getElementById('loan-tea').value),
             timestamp: serverTimestamp()
         };
-        if (editId) {
-            await updateDoc(doc(db, 'artifacts', appIdVar, 'users', userId, 'loans', editId), data);
-        } else {
-            await addDoc(collection(db, 'artifacts', appIdVar, 'users', userId, 'loans'), data);
-        }
-        loanForm.reset();
-        document.getElementById('cancel-edit-loan').click();
+
+        try {
+            if (editId) {
+                await updateDoc(doc(db, 'artifacts', appIdVar, 'users', userId, 'loans', editId), data);
+            } else {
+                await addDoc(collection(db, 'artifacts', appIdVar, 'users', userId, 'loans'), data);
+            }
+            loanForm.reset();
+            document.getElementById('cancel-edit-loan').click();
+        } catch (err) { console.error("Error al guardar préstamo:", err); }
     };
 
+    // --- LÓGICA DE FORMULARIO PRÉSTAMOS ---
     document.getElementById('loan-operation').onchange = (e) => {
-        document.getElementById('loan-ext-fields').classList.toggle('hidden', e.target.value === 'pago');
+        document.getElementById('loan-detail-fields').classList.toggle('hidden', e.target.value === 'pago');
     };
 
     window.editLoan = (id) => {
@@ -325,7 +339,7 @@
         document.getElementById('loan-bank').value = l.bank;
         document.getElementById('loan-installment-amount').value = l.installmentAmount;
         document.getElementById('loan-date').value = l.date;
-        document.getElementById('loan-ext-fields').classList.toggle('hidden', l.operation === 'pago');
+        document.getElementById('loan-detail-fields').classList.toggle('hidden', l.operation === 'pago');
         if (l.operation === 'prestamo') {
             document.getElementById('loan-total-amount').value = l.totalAmount;
             document.getElementById('loan-tea').value = l.tea;
@@ -342,7 +356,7 @@
         document.getElementById('cancel-edit-loan').classList.add('hidden');
     };
 
-    // --- ACTUALIZAR UI (HOME + HISTORIAL + DASHBOARD) ---
+    // --- ACTUALIZACIÓN DE INTERFAZ ---
     const updateUI = () => {
         let inc = 0, exp = 0, catMap = {};
         const homeList = document.getElementById('transaction-list');
@@ -359,10 +373,10 @@
             }
 
             const card = `
-                <div class="bg-white p-4 rounded-2xl shadow-sm flex justify-between items-center">
+                <div class="bg-white p-4 rounded-2xl shadow-sm flex justify-between items-center border-l-4 ${t.amount > 0 ? 'border-green-500' : 'border-red-500'}">
                     <div>
                         <div class="font-bold text-gray-800">${t.description}</div>
-                        <div class="text-[10px] text-gray-400 font-medium">${t.date} • ${t.category}</div>
+                        <div class="text-[10px] text-gray-400 font-bold uppercase">${t.date} • ${t.category}</div>
                     </div>
                     <div class="font-bold ${t.amount > 0 ? 'text-green-600' : 'text-red-600'}">
                         ${t.amount > 0 ? '+' : '-'}${symbols[t.currency]}${Math.abs(t.amount).toFixed(2)}
@@ -387,19 +401,19 @@
 
     const renderLoans = () => {
         document.getElementById('loan-list').innerHTML = allLoans.map(l => `
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50 flex justify-between items-center">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
                 <div>
                     <div class="flex items-center gap-2 mb-1">
                         <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded ${l.operation === 'pago' ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600'}">${l.operation}</span>
                         <span class="font-bold text-gray-700">${l.bank}</span>
                     </div>
-                    <div class="text-[10px] text-gray-400 grid grid-cols-2 gap-x-2">
-                        <span>Cuota: ${symbols[l.currency]}${l.installmentAmount}</span>
-                        <span>Fecha: ${l.date}</span>
-                        ${l.operation === 'prestamo' ? `<span>Total: ${symbols[l.currency]}${l.totalAmount}</span><span>TCEA: ${l.tea}%</span>` : ''}
+                    <div class="text-[10px] text-gray-400 grid grid-cols-2 gap-x-4">
+                        <span><i class="fas fa-tag mr-1"></i>Cuota: S/${l.installmentAmount}</span>
+                        <span><i class="fas fa-calendar mr-1"></i>${l.date}</span>
+                        ${l.operation === 'prestamo' ? `<span><i class="fas fa-coins mr-1"></i>Total: S/${l.totalAmount}</span><span><i class="fas fa-percentage mr-1"></i>TCEA: ${l.tea}%</span>` : ''}
                     </div>
                 </div>
-                <button onclick="editLoan('${l.id}')" class="text-blue-500 p-2"><i class="fas fa-edit"></i></button>
+                <button onclick="editLoan('${l.id}')" class="text-blue-500 p-3 hover:bg-blue-50 rounded-full transition"><i class="fas fa-edit"></i></button>
             </div>
         `).join('');
     };
@@ -409,7 +423,7 @@
         if (comparisonChartInstance) comparisonChartInstance.destroy();
         comparisonChartInstance = new Chart(ctx1, {
             type: 'bar',
-            data: { labels: ['Ingresos', 'Gastos'], datasets: [{ data: [inc, exp], backgroundColor: ['#10b981', '#ef4444'], borderRadius: 10 }] },
+            data: { labels: ['Ingresos', 'Gastos'], datasets: [{ data: [inc, exp], backgroundColor: ['#10b981', '#ef4444'], borderRadius: 12 }] },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: false } }
         });
 
@@ -417,7 +431,7 @@
         if (categoryChartInstance) categoryChartInstance.destroy();
         categoryChartInstance = new Chart(ctx2, {
             type: 'doughnut',
-            data: { labels: Object.keys(catMap), datasets: [{ data: Object.values(catMap), backgroundColor: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'] }] },
+            data: { labels: Object.keys(catMap), datasets: [{ data: Object.values(catMap), backgroundColor: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'], borderWidth: 0 }] },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
         });
     };
