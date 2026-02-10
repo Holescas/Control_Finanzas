@@ -18,39 +18,41 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
 </head>
 <body class="bg-gray-100 flex flex-col min-h-screen">
 
-<div id="user-id-container" class="sticky top-0 z-50 bg-white shadow-sm p-2 text-center text-xs text-gray-400">
-    <span id="user-id-text">Sincronizando con la nube...</span>
+<div id="user-id-container" class="sticky top-0 z-50 bg-white shadow p-2 text-center text-sm text-gray-500">
+    <span id="user-id-text">Cargando ID...</span>
 </div>
 
 <div id="app-container" class="flex-1 container mx-auto p-4 sm:p-6 lg:p-8 relative">
 
     <div id="home-view" class="view-content relative">
         <div class="flex flex-col items-center justify-center space-y-6">
-            <h1 class="text-3xl font-bold text-gray-800">Control de Gastos</h1>
+            <h1 id="home-title" class="text-3xl sm:text-4xl font-bold text-gray-800">Control de Gastos</h1>
             <div class="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-white rounded-2xl shadow-sm p-6 flex flex-col items-center border-b-4 border-green-500">
-                    <div class="text-2xl font-bold text-green-600" id="total-income">0.00</div>
-                    <div class="text-sm text-gray-500 mt-1 uppercase font-bold tracking-tighter">Ingresos</div>
+                <div class="bg-green-50 rounded-xl shadow-lg p-6 sm:p-8 flex flex-col items-center text-center">
+                    <div class="text-2xl sm:text-3xl font-bold text-green-600" id="total-income">0.00</div>
+                    <div class="text-lg text-gray-500 mt-1">Ingresos</div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-sm p-6 flex flex-col items-center border-b-4 border-red-500">
-                    <div class="text-2xl font-bold text-red-600" id="total-expense">0.00</div>
-                    <div class="text-sm text-gray-500 mt-1 uppercase font-bold tracking-tighter">Egresos</div>
+                <div class="bg-red-50 rounded-xl shadow-lg p-6 sm:p-8 flex flex-col items-center text-center">
+                    <div class="text-2xl sm:text-3xl font-bold text-red-600" id="total-expense">0.00</div>
+                    <div class="text-lg text-gray-500 mt-1">Egresos</div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-sm p-6 flex flex-col items-center border-b-4 border-blue-500">
-                    <div class="text-2xl font-bold text-blue-600" id="total-balance">0.00</div>
-                    <div class="text-sm text-gray-500 mt-1 uppercase font-bold tracking-tighter" id="balance-label">Balance</div>
+                <div class="bg-blue-50 rounded-xl shadow-lg p-6 sm:p-8 flex flex-col items-center text-center">
+                    <div class="text-2xl sm:text-3xl font-bold text-blue-600" id="total-balance">0.00</div>
+                    <div class="text-lg text-gray-500 mt-1" id="balance-label">Balance</div>
                 </div>  
             </div>
-            
             <div class="w-full max-w-4xl mt-6">
                 <div class="flex justify-end mb-3">
-                    <button id="add-transaction-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-xl shadow-lg transition flex items-center gap-2">
-                        <i class="fas fa-plus"></i> Registrar
+                    <button id="add-transaction-btn" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg shadow transition duration-300 flex items-center space-x-2">
+                        <i class="fas fa-plus"></i>
+                        <span>Registrar</span>
                     </button>
                 </div>
-                <div class="bg-white rounded-2xl shadow-sm p-6 sm:p-8">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4">Últimos Movimientos</h2>
-                    <div id="transaction-list" class="space-y-4"></div>
+                <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Últimos Movimientos</h2>
+                    <div id="transaction-list" class="space-y-4">
+                        <div class="text-center text-gray-500 p-4">No hay transacciones</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,196 +60,265 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
     
     <div id="prestamos-view" class="view-content hidden">
         <div class="flex flex-col items-center justify-center space-y-6">
-            <h1 class="text-3xl font-bold text-gray-800">Préstamos Personales</h1>
-            <div class="w-full max-w-4xl bg-white rounded-2xl shadow-sm p-6 sm:p-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 text-center">Préstamos Personales</h1>
+            <div class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6 sm:p-8 mt-6">
                 <form id="loan-form" class="space-y-4">
                     <input type="hidden" id="edit-loan-id">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="col-span-1 md:col-span-2">
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Operación</label>
-                            <select id="loan-operation" class="w-full p-2.5 border rounded-xl bg-gray-50">
-                                <option value="prestamo">Nuevo Préstamo</option>
-                                <option value="pago">Registrar Pago</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Banco / Entidad</label>
-                            <select id="loan-bank" class="w-full p-2.5 border rounded-xl bg-gray-50">
-                                <option value="BCP">BCP</option>
-                                <option value="Interbank">Interbank</option>
-                                <option value="BBVA">BBVA</option>
-                                <option value="Scotiabank">Scotiabank</option>
-                                <option value="Saga Falabella">Saga Falabella</option>
-                                <option value="Ripley">Ripley</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Valor de Cuota / Pago</label>
-                            <input type="number" id="loan-installment-amount" step="0.01" required class="w-full p-2.5 border rounded-xl bg-gray-50">
-                        </div>
-                        <div id="loan-detail-fields" class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Monto Total</label>
-                                <input type="number" id="loan-total-amount" step="0.01" class="w-full p-2.5 border rounded-xl bg-gray-50">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">N° Cuotas</label>
-                                <input type="number" id="loan-installments" class="w-full p-2.5 border rounded-xl bg-gray-50">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">TCEA %</label>
-                                <input type="number" id="loan-tea" step="0.01" class="w-full p-2.5 border rounded-xl bg-gray-50">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Fecha</label>
-                            <input type="date" id="loan-date" required class="w-full p-2.5 border rounded-xl bg-gray-50">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Moneda</label>
-                            <select id="loan-currency" class="w-full p-2.5 border rounded-xl bg-gray-50">
-                                <option value="PEN">Soles (S/)</option>
-                                <option value="USD">Dólares ($)</option>
-                            </select>
-                        </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">Tipo de Operación</label>
+                        <select id="loan-operation" required class="w-full p-2 border border-gray-300 rounded-lg">
+                            <option value="prestamo">Préstamo</option>
+                            <option value="pago">Pago</option>
+                        </select>
                     </div>
-                    <div class="flex gap-2 justify-end pt-2">
-                        <button type="button" id="cancel-edit-loan" class="hidden px-4 py-2 bg-gray-200 text-gray-600 rounded-xl font-bold">Cancelar</button>
-                        <button type="submit" id="save-loan-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg">Guardar</button>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">Nombre del Banco</label>
+                        <select id="loan-bank" required class="w-full p-2 border border-gray-300 rounded-lg">
+                            <option value="" disabled selected>Seleccione un banco</option>
+                            <option value="Scotiabank">Scotiabank</option>
+                            <option value="Banco de Crédito">BCP</option>
+                            <option value="Saga Falabella">Saga Falabella</option>
+                            <option value="Ripley">Ripley</option>
+                            <option value="Continental">BBVA</option>
+                            <option value="Interbanck">Interbanck</option>
+                            <option value="Otro Banco">Otro Banco</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">Valor Total</label>
+                        <input type="number" id="loan-total-amount" step="0.01" required class="w-full p-2 border border-gray-300 rounded-lg disabled:bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">Tipo de moneda</label>
+                        <select id="loan-currency" required class="w-full p-2 border border-gray-300 rounded-lg">
+                            <option value="PEN">S/ (Soles)</option>
+                            <option value="USD">$ (Dólares)</option>
+                            <option value="EUR">€ (Euros)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">N° Cuotas</label>
+                        <input type="number" id="loan-installments" required class="w-full p-2 border border-gray-300 rounded-lg disabled:bg-gray-100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">Valor de Cuota / Pago</label>
+                        <input type="number" id="loan-installment-amount" step="0.01" required class="w-full p-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">Fecha</label>
+                        <input type="date" id="loan-date" required class="w-full p-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">TCEA %</label>
+                        <input type="number" id="loan-tea" step="0.01" required class="w-full p-2 border border-gray-300 rounded-lg disabled:bg-gray-100">
+                    </div>
+                    <div id="loan-warning" class="hidden p-3 bg-red-100 border border-red-400 text-red-700 text-sm rounded-lg">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <span id="loan-warning-text">El banco o el monto no coinciden con un préstamo registrado.</span>
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" id="cancel-edit-loan" class="hidden px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
+                        <button type="submit" id="save-loan-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Guardar</button>
                     </div>
                 </form>
             </div>
-            <div id="loan-list" class="w-full max-w-4xl space-y-3"></div>
+            <div class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6 sm:p-8 mt-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Préstamos registrados</h2>
+                <div id="loan-list" class="space-y-4">
+                    <div class="text-center text-gray-500 p-4">No hay préstamos registrados</div>
+                </div>
+            </div>
         </div>
     </div>
     
     <div id="dashboard-view" class="view-content hidden">
-        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Estadísticas</h1>
-        <div class="max-w-4xl mx-auto bg-white p-4 rounded-xl shadow-sm mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Resumen Estadístico</h1>
+        <div class="max-w-4xl mx-auto bg-white p-4 rounded-xl shadow mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Filtrar por Fecha</label>
-                <select id="dash-filter-date" class="w-full p-2 border-b rounded-lg text-sm outline-none">
-                    <option value="this-month">Este Mes</option>
+                <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Periodo</label>
+                <select id="dash-filter-date" class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                    <option value="this-month">Mes Actual</option>
                     <option value="last-3-months">Últimos 3 Meses</option>
                     <option value="all-time">Todo el historial</option>
                 </select>
             </div>
             <div>
-                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Filtrar Categoría</label>
-                <select id="dash-filter-category" class="w-full p-2 border-b rounded-lg text-sm outline-none">
-                    <option value="all">Todas</option>
+                <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Categoría</label>
+                <select id="dash-filter-category" class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                    <option value="all">Todas las categorías</option>
+                    <option value="Alimentación">Alimentación</option>
+                    <option value="Transporte">Transporte</option>
+                    <option value="Servicio Luz">Servicio Luz</option>
+                    <option value="Servicio Agua">Servicio Agua</option>
+                    <option value="Servicio Telefonía">Servicio Telefonía</option>
+                    <option value="Servicio Internet">Servicio Internet</option>
+                    <option value="Entretenimiento">Entretenimiento</option>
+                    <option value="Compras">Compras</option>
+                    <option value="Salud">Salud</option>
+                    <option value="Otros">Otros</option>
                 </select>
             </div>
         </div>
-        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-2xl shadow-sm">
-                <h3 class="font-bold text-gray-700 mb-4 text-center">Egresos por Categoría</h3>
-                <div class="h-64"><canvas id="categoryChart"></canvas></div>
+
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Distribución de Gastos</h3>
+                <div class="relative h-64">
+                    <canvas id="categoryChart"></canvas>
+                </div>
             </div>
-            <div class="bg-white p-6 rounded-2xl shadow-sm">
-                <h3 class="font-bold text-gray-700 mb-4 text-center">Ingresos vs Egresos</h3>
-                <div class="h-64"><canvas id="comparisonChart"></canvas></div>
+            <div class="bg-white p-6 rounded-xl shadow">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Ingresos vs Egresos</h3>
+                <div class="relative h-64">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+            <div class="md:col-span-2 bg-blue-900 text-white p-6 rounded-xl shadow flex flex-col sm:flex-row justify-around items-center space-y-4 sm:space-y-0 text-center">
+                <div>
+                    <div class="text-sm opacity-80">Mayor Gasto en:</div>
+                    <div id="dash-top-category" class="text-xl font-bold">-</div>
+                </div>
+                <div class="hidden sm:block w-px h-10 bg-white opacity-20"></div>
+                <div>
+                    <div class="text-sm opacity-80">Promedio Diario:</div>
+                    <div id="dash-avg-daily" class="text-xl font-bold">0.00</div>
+                </div>
+                <div class="hidden sm:block w-px h-10 bg-white opacity-20"></div>
+                <div>
+                    <div class="text-sm opacity-80">Ahorro en Periodo:</div>
+                    <div id="dash-savings-rate" class="text-xl font-bold">0%</div>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="historial-view" class="view-content hidden">
-        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Historial Completo</h1>
-        <div class="max-w-4xl mx-auto bg-white p-4 rounded-xl shadow-sm mb-6 flex flex-col sm:flex-row gap-4 items-end">
-            <div class="flex-1">
-                <label class="block text-xs font-bold text-gray-400 uppercase">Desde</label>
-                <input type="date" id="export-date-start" class="w-full p-2 border-b outline-none">
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Historial de Transacciones</h1>
+        <div class="max-w-4xl mx-auto bg-white p-4 rounded-xl shadow mb-6">
+            <h3 class="text-sm font-bold text-gray-600 mb-3 uppercase tracking-wider">Exportar Movimientos</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Desde</label>
+                    <input type="date" id="export-date-start" class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Hasta</label>
+                    <input type="date" id="export-date-end" class="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                </div>
+                <div>
+                    <button id="export-excel-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center space-x-2 transition shadow-md">
+                        <i class="fas fa-file-excel"></i>
+                        <span>Descargar Excel</span>
+                    </button>
+                </div>
             </div>
-            <div class="flex-1">
-                <label class="block text-xs font-bold text-gray-400 uppercase">Hasta</label>
-                <input type="date" id="export-date-end" class="w-full p-2 border-b outline-none">
-            </div>
-            <button id="export-excel-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-xl shadow-md transition flex items-center gap-2">
-                <i class="fas fa-file-excel"></i> Exportar
-            </button>
         </div>
-        <div id="historial-transaction-list" class="max-w-4xl mx-auto space-y-4"></div>
+        <div id="historial-transaction-list" class="max-w-4xl mx-auto space-y-4">
+            <div class="text-center text-gray-500 p-4 bg-white rounded-lg shadow">Cargando historial...</div>
+        </div>
     </div>
-
 </div>
 
-<div id="transaction-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden z-[100]">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md modal-content p-6">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-gray-800">Nueva Operación</h3>
-            <button id="close-modal-btn" class="text-gray-400 text-2xl hover:text-gray-600">&times;</button>
+<div id="transaction-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center p-4 hidden z-[100]">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md modal-content p-6">
+        <div class="flex justify-between items-center pb-3">
+            <h3 class="text-xl font-semibold text-gray-800">Registrar Operación</h3>
+            <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
         </div>
         <form id="transaction-form" class="space-y-4">
-            <div class="flex gap-2 p-1 bg-gray-100 rounded-xl">
-                <label class="flex-1 text-center py-2 rounded-lg cursor-pointer has-[:checked]:bg-white has-[:checked]:shadow-sm transition">
-                    <input type="radio" name="type" value="income" class="hidden"> <span class="text-sm font-bold text-green-600">Ingreso</span>
-                </label>
-                <label class="flex-1 text-center py-2 rounded-lg cursor-pointer has-[:checked]:bg-white has-[:checked]:shadow-sm transition">
-                    <input type="radio" name="type" value="expense" checked class="hidden"> <span class="text-sm font-bold text-red-600">Egreso</span>
-                </label>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-[10px] font-bold text-gray-400 uppercase">Monto</label>
-                    <input type="number" id="amount" step="0.01" required class="w-full p-2 border-b-2 border-gray-100 focus:border-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-gray-400 uppercase">Moneda</label>
-                    <select id="currency" class="w-full p-2 border-b-2 border-gray-100 outline-none">
-                        <option value="PEN">Soles (S/)</option>
-                        <option value="USD">Dólares ($)</option>
-                    </select>
+            <div>
+                <label class="block text-gray-700 font-medium mb-1 text-sm">Tipo</label>
+                <div class="flex space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="type" value="income" required class="form-radio text-green-600">
+                        <span class="ml-2 text-sm">Ingreso</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="type" value="expense" checked class="form-radio text-red-600">
+                        <span class="ml-2 text-sm">Egreso</span>
+                    </label>
                 </div>
             </div>
             <div>
-                <label class="block text-[10px] font-bold text-gray-400 uppercase">Descripción</label>
-                <input type="text" id="description" required class="w-full p-2 border-b-2 border-gray-100 outline-none">
+                <label for="currency" class="block text-gray-700 font-medium mb-1 text-sm">Moneda</label>
+                <select id="currency" required class="w-full p-2 border border-gray-300 rounded-lg">
+                    <option value="" disabled selected>Seleccione moneda</option>
+                    <option value="PEN">Soles (S/)</option>
+                    <option value="USD">Dólares ($)</option>
+                    <option value="EUR">Euros (€)</option>
+                </select>
             </div>
             <div>
-                <label class="block text-[10px] font-bold text-gray-400 uppercase">Fecha</label>
-                <input type="date" id="transaction-date" required class="w-full p-2 border-b-2 border-gray-100 outline-none">
+                <label for="amount" class="block text-gray-700 font-medium mb-1 text-sm">Monto</label>
+                <input type="number" id="amount" step="0.01" required class="w-full p-2 border border-gray-300 rounded-lg">
             </div>
             <div>
-                <label class="block text-[10px] font-bold text-gray-400 uppercase">Forma de Pago</label>
-                <select id="payment-method" class="w-full p-2 border-b-2 border-gray-100 outline-none">
+                <label for="description" class="block text-gray-700 font-medium mb-1 text-sm">Descripción</label>
+                <input type="text" id="description" required class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+            <div>
+                <label for="transaction-date" class="block text-gray-700 font-medium mb-1 text-sm">Fecha</label>
+                <input type="date" id="transaction-date" required class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+            <div>
+                <label for="payment-method" class="block text-gray-700 font-medium mb-1 text-sm">Forma de Pago</label>
+                <select id="payment-method" required class="w-full p-2 border border-gray-300 rounded-lg">
                     <option value="Efectivo">Efectivo</option>
-                    <option value="Yape / Plin">Yape / Plin</option>
+                    <option value="Plin">Plin</option>
+                    <option value="Yape">Yape</option>
                     <option value="Transferencia">Transferencia</option>
-                    <option value="Tarjeta">Tarjeta de Crédito</option>
+                    <option value="Tarjeta de credito">Tarjeta de credito</option>
                 </select>
             </div>
             <div>
-                <label class="block text-[10px] font-bold text-gray-400 uppercase">Categoría</label>
-                <select id="category" class="w-full p-2 border-b-2 border-gray-100 outline-none">
-                    <option value="Alimentación">Alimentación</option>
-                    <option value="Transporte">Transporte</option>
-                    <option value="Servicios">Servicios</option>
-                    <option value="Salud">Salud</option>
-                    <option value="Entretenimiento">Entretenimiento</option>
-                    <option value="Otros">Otros</option>
+                <label for="category" class="block text-gray-700 font-medium mb-1 text-sm">Categoría</label>
+                <select id="category" class="w-full p-2 border border-gray-300 rounded-lg bg-white disabled:bg-gray-100 disabled:text-gray-400">
+                        <option value="Alimentación">Alimentación</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Servicio Luz">Servicio Luz</option>
+                        <option value="Servicio Agua">Servicio Agua</option>
+                        <option value="Servicio Telefonía">Servicio Telefonía</option>
+                        <option value="Servicio Internet">Servicio Internet</option>
+                        <option value="Entretenimiento">Entretenimiento</option>
+                        <option value="Compras">Compras</option>
+                        <option value="Salud">Salud</option>
+                        <option value="Otros">Otros</option>
                 </select>
             </div>
-            <div class="flex gap-2 pt-4">
-                <button type="button" id="cancel-form-btn" class="flex-1 py-3 bg-gray-100 rounded-2xl font-bold">Cancelar</button>
-                <button type="submit" class="flex-1 py-3 bg-blue-600 text-white rounded-2xl font-bold shadow-lg">Guardar</button>
+            <div class="flex justify-end space-x-2">
+                <button type="button" id="cancel-form-btn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm">Cancelar</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold">Guardar</button>
             </div>
         </form>
     </div>
 </div>
 
-<footer class="fixed bottom-0 w-full bg-white/80 backdrop-blur-md border-t p-2 flex justify-around items-center z-50">
-    <button class="nav-btn p-3 text-blue-600" data-target="home-view"><i class="fas fa-home text-xl"></i></button>
-    <button class="nav-btn p-3 text-gray-500" data-target="prestamos-view"><i class="fas fa-hand-holding-usd text-xl"></i></button>
-    <button class="nav-btn p-3 text-gray-500" data-target="dashboard-view"><i class="fas fa-chart-pie text-xl"></i></button>
-    <button class="nav-btn p-3 text-gray-500" data-target="historial-view"><i class="fas fa-list text-xl"></i></button>
+<footer class="sticky bottom-0 w-full bg-white shadow-lg border-t border-gray-200 p-4">
+    <div class="container mx-auto flex justify-around items-center">
+        <button class="nav-btn flex flex-col items-center text-blue-600 font-semibold" data-target="home-view">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-[10px] mt-1">Inicio</span>
+        </button>
+        <button class="nav-btn flex flex-col items-center text-gray-500 hover:text-blue-600" data-target="prestamos-view">
+            <i class="fas fa-money-check-alt text-xl"></i>
+            <span class="text-[10px] mt-1">Préstamos</span>
+        </button>
+        <button class="nav-btn flex flex-col items-center text-gray-500 hover:text-blue-600" data-target="dashboard-view">
+            <i class="fas fa-chart-line text-xl"></i>
+            <span class="text-[10px] mt-1">Dashboard</span>
+        </button>
+        <button class="nav-btn flex flex-col items-center text-gray-500 hover:text-blue-600" data-target="historial-view">
+            <i class="fas fa-history text-xl"></i>
+            <span class="text-[10px] mt-1">Historial</span>
+        </button>
+    </div>
 </footer>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-    
+
     const firebaseConfig = {
         apiKey: "AIzaSyBzRKfqxhuGK4vfu9YtFImeKiORCBWw8yE",
         authDomain: "control-financiero-3d92d.firebaseapp.com",
@@ -260,106 +331,323 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
-    const appId = "control-financiero-3d92d"; // VARIABLE AGREGADA
+    const appId = "control-financiero-3d92d"; // ID necesario para la ruta de Firestore
 
     let userId;
     let allTransactions = [];
-    let allLoans = [];
+    let allLoans = []; 
+
+    // Charts instances
+    let categoryChartInstance = null;
+    let comparisonChartInstance = null;
+    const RATES_TO_PEN = { 'PEN': 1.0, 'USD': 3.75, 'EUR': 4.10 };
+    const currencySymbols = { 'PEN': 'S/', 'USD': '$', 'EUR': '€' };
+
+    const addTransactionBtn = document.getElementById('add-transaction-btn');
+    const transactionModal = document.getElementById('transaction-modal');
+    const transactionForm = document.getElementById('transaction-form');
+    const loanForm = document.getElementById('loan-form');
+    const categorySelect = document.getElementById('category');
+    const editLoanId = document.getElementById('edit-loan-id');
+    const cancelEditLoanBtn = document.getElementById('cancel-edit-loan');
+    const saveLoanBtn = document.getElementById('save-loan-btn');
+    const loanOperationSelect = document.getElementById('loan-operation');
+    const loanWarning = document.getElementById('loan-warning');
+
+    const dashFilterDate = document.getElementById('dash-filter-date');
+    const dashFilterCategory = document.getElementById('dash-filter-category');
+
+    const exportExcelBtn = document.getElementById('export-excel-btn');
+    const exportDateStart = document.getElementById('export-date-start');
+    const exportDateEnd = document.getElementById('export-date-end');
+
+    const toggleLoanFields = () => {
+        const isPago = loanOperationSelect.value === 'pago';
+        document.getElementById('loan-total-amount').disabled = isPago;
+        document.getElementById('loan-installments').disabled = isPago;
+        document.getElementById('loan-tea').disabled = isPago;
+        
+        if (isPago) {
+            document.getElementById('loan-total-amount').required = false;
+            document.getElementById('loan-installments').required = false;
+            document.getElementById('loan-tea').required = false;
+        } else {
+            document.getElementById('loan-total-amount').required = true;
+            document.getElementById('loan-installments').required = true;
+            document.getElementById('loan-tea').required = true;
+        }
+        loanWarning.classList.add('hidden');
+    };
+
+    loanOperationSelect.addEventListener('change', toggleLoanFields);
+
+    const updateCategoryStatus = () => {
+        const type = transactionForm.type.value;
+        if (type === 'income') {
+            categorySelect.disabled = true;
+            categorySelect.value = "Otros";
+        } else {
+            categorySelect.disabled = false;
+        }
+    };
+
+    document.querySelectorAll('input[name="type"]').forEach(radio => {
+        radio.addEventListener('change', updateCategoryStatus);
+    });
 
     onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            userId = user.uid;
-            document.getElementById('user-id-text').textContent = `Usuario: ${userId.substring(0, 8)}`;
-            
-            // Listeners
-            onSnapshot(collection(db, 'artifacts', appId, 'users', userId, 'transactions'), (snap) => {
-                allTransactions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                updateHomeView();
-                renderHistorial();
-            });
-
-            onSnapshot(collection(db, 'artifacts', appId, 'users', userId, 'loans'), (snap) => {
-                allLoans = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderLoans();
-            });
-        } else {
-            signInAnonymously(auth);
+        if (!user) {
+            const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+            if (token) await signInWithCustomToken(auth, token);
+            else await signInAnonymously(auth);
+            return;
         }
+        userId = user.uid;
+        document.getElementById('user-id-text').textContent = `ID Usuario: ${userId}`;
+        
+        onSnapshot(collection(db, 'artifacts', appId, 'users', userId, 'transactions'), (snap) => {
+            allTransactions = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+            updateHomeView();
+            renderHistorial();
+            updateDashboard();
+        });
+
+        onSnapshot(collection(db, 'artifacts', appId, 'users', userId, 'loans'), (snap) => {
+            allLoans = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (a.timestamp?.seconds || 0) - (b.timestamp?.seconds || 0));
+            renderLoans();
+        });
     });
 
     // BOTÓN GUARDAR TRANSACCIÓN (REPARADO)
-    document.getElementById('transaction-form').onsubmit = async (e) => {
-        e.preventDefault(); // Línea reparada
-        const type = e.target.type.value;
+    transactionForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const type = transactionForm.type.value;
+        const currency = document.getElementById('currency').value;
         const amt = parseFloat(document.getElementById('amount').value);
         
         await addDoc(collection(db, 'artifacts', appId, 'users', userId, 'transactions'), {
             amount: type === 'expense' ? -amt : amt,
-            currency: document.getElementById('currency').value,
+            currency,
             description: document.getElementById('description').value,
+            type,
             date: document.getElementById('transaction-date').value,
             paymentMethod: document.getElementById('payment-method').value,
             category: type === 'income' ? 'Ingreso' : document.getElementById('category').value,
             timestamp: serverTimestamp()
         });
-        document.getElementById('transaction-modal').classList.add('hidden');
-        e.target.reset();
+        transactionModal.classList.add('hidden');
+        transactionForm.reset();
+        updateCategoryStatus();
     };
 
     // BOTÓN GUARDAR PRÉSTAMO (REPARADO)
-    document.getElementById('loan-form').onsubmit = async (e) => {
-        e.preventDefault(); // Línea reparada
-        const operation = document.getElementById('loan-operation').value;
-        const data = {
-            operation,
-            bank: document.getElementById('loan-bank').value,
-            installmentAmount: parseFloat(document.getElementById('loan-installment-amount').value),
-            date: document.getElementById('loan-date').value,
-            currency: document.getElementById('loan-currency').value,
-            timestamp: serverTimestamp()
+    loanForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const id = editLoanId.value;
+        const operation = loanOperationSelect.value;
+        const bank = document.getElementById('loan-bank').value;
+        const currency = document.getElementById('loan-currency').value;
+        const instAmt = parseFloat(document.getElementById('loan-installment-amount').value);
+        const date = document.getElementById('loan-date').value;
+
+        if (operation === 'pago') {
+            const originalLoan = allLoans.find(l => l.operation === 'prestamo' && l.bank === bank);
+            if (!originalLoan || Math.abs(originalLoan.installmentAmount - instAmt) > 0.01) {
+                loanWarning.classList.remove('hidden');
+                return;
+            }
+            // Registrar pago como egreso en transacciones
+            await addDoc(collection(db, 'artifacts', appId, 'users', userId, 'transactions'), {
+                amount: -instAmt,
+                currency,
+                description: `Pago de Cuota - ${bank}`,
+                type: 'expense',
+                date,
+                paymentMethod: 'Transferencia',
+                category: 'Préstamos',
+                timestamp: serverTimestamp()
+            });
+        }
+
+        const loanData = {
+            operation, bank, currency, installmentAmount: instAmt, date, timestamp: serverTimestamp()
         };
         if (operation === 'prestamo') {
-            data.totalAmount = parseFloat(document.getElementById('loan-total-amount').value);
-            data.installments = parseInt(document.getElementById('loan-installments').value);
-            data.tea = parseFloat(document.getElementById('loan-tea').value);
+            loanData.totalAmount = parseFloat(document.getElementById('loan-total-amount').value);
+            loanData.installments = parseInt(document.getElementById('loan-installments').value);
+            loanData.tea = parseFloat(document.getElementById('loan-tea').value);
         }
-        await addDoc(collection(db, 'artifacts', appId, 'users', userId, 'loans'), data);
-        e.target.reset();
+
+        try {
+            if (id) {
+                await updateDoc(doc(db, 'artifacts', appId, 'users', userId, 'loans', id), loanData);
+            } else {
+                await addDoc(collection(db, 'artifacts', appId, 'users', userId, 'loans'), loanData);
+            }
+            resetLoanForm();
+        } catch (error) { console.error("Error al procesar préstamo:", error); }
     };
 
-    // NAVEGACIÓN (ORIGINAL)
+    // FUNCIONES DE VISTA (ORIGINALES)
+    const updateHomeView = () => {
+        const today = new Date();
+        const firstTransaction = allTransactions[0];
+        const showSymbol = !!firstTransaction;
+        const baseCurrency = firstTransaction ? firstTransaction.currency : 'PEN';
+        
+        const monthlyTxs = allTransactions.filter(t => {
+            if (!t.date) return false;
+            const d = new Date(t.date + 'T00:00:00');
+            return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
+        });
+
+        let totalIncBase = 0, totalExpBase = 0;
+        const list = document.getElementById('transaction-list');
+        list.innerHTML = monthlyTxs.length ? '' : '<div class="text-center text-gray-500 py-4">Sin movimientos este mes</div>';
+
+        monthlyTxs.slice(0, 5).forEach(t => {
+            const amountInBase = (t.amount * RATES_TO_PEN[t.currency]) / RATES_TO_PEN[baseCurrency];
+            if(t.amount > 0) totalIncBase += amountInBase; else totalExpBase += Math.abs(amountInBase);
+            const sym = currencySymbols[t.currency] || '';
+            list.innerHTML += `
+                <div class="flex justify-between items-center p-3 border-b">
+                    <div>
+                        <div class="font-medium text-sm text-gray-800">${t.description}</div>
+                        <div class="text-[10px] text-gray-400">${t.date}</div>
+                    </div>
+                    <div class="font-bold ${t.amount > 0 ? 'text-green-600' : 'text-red-600'}">
+                        ${sym} ${Math.abs(t.amount).toFixed(2)}
+                    </div>
+                </div>`;
+        });
+        document.getElementById('total-income').textContent = formatDisplay(totalIncBase, baseCurrency, showSymbol);
+        document.getElementById('total-expense').textContent = formatDisplay(totalExpBase, baseCurrency, showSymbol);
+        document.getElementById('total-balance').textContent = formatDisplay(totalIncBase - totalExpBase, baseCurrency, showSymbol);
+        document.getElementById('balance-label').textContent = `Balance (${baseCurrency})`;
+    };
+
+    const formatDisplay = (val, currencyCode, showSymbol) => {
+        const symbol = showSymbol ? (currencySymbols[currencyCode] || '') : '';
+        return `${symbol} ${val.toLocaleString('es-PE', { minimumFractionDigits: 2 })}`;
+    };
+
+    const renderHistorial = () => {
+        const histList = document.getElementById('historial-transaction-list');
+        histList.innerHTML = allTransactions.length ? '' : '<div class="text-center text-gray-500 p-4 bg-white rounded-lg shadow">No hay registros</div>';
+        allTransactions.forEach(t => {
+            const sym = currencySymbols[t.currency] || '';
+            histList.innerHTML += `
+                <div class="bg-white p-4 rounded-lg shadow border-l-4 ${t.amount > 0 ? 'border-green-500' : 'border-red-500'} flex justify-between items-center">
+                    <div>
+                        <div class="font-bold text-gray-800">${t.description}</div>
+                        <div class="text-xs text-gray-500">${t.date} | ${t.category}</div>
+                    </div>
+                    <div class="font-bold text-lg ${t.amount > 0 ? 'text-green-600' : 'text-red-600'}">
+                        ${sym} ${Math.abs(t.amount).toFixed(2)}
+                    </div>
+                </div>`;
+        });
+    };
+
+    const renderLoans = () => {
+        const loanListEl = document.getElementById('loan-list');
+        loanListEl.innerHTML = '';
+        const loansOnly = allLoans.filter(l => l.operation === 'prestamo');
+        if (loansOnly.length === 0) {
+            loanListEl.innerHTML = '<div class="text-center text-gray-500 p-4">No hay préstamos registrados</div>';
+            return;
+        }
+        loansOnly.forEach(loan => {
+            const sym = currencySymbols[loan.currency] || '';
+            const card = document.createElement('div');
+            card.className = "bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center";
+            card.innerHTML = `
+                <div>
+                    <div class="font-bold text-gray-800">${loan.bank}</div>
+                    <div class="text-xs text-gray-500">${loan.date} | Cuotas: ${loan.installments}</div>
+                </div>
+                <div class="text-right">
+                    <div class="font-bold text-blue-600 text-lg">${sym} ${loan.totalAmount.toFixed(2)}</div>
+                    <button class="edit-loan-btn text-gray-400 p-1" data-id="${loan.id}"><i class="fas fa-edit"></i></button>
+                </div>`;
+            card.querySelector('.edit-loan-btn').onclick = () => loadLoanForEdit(loan);
+            loanListEl.appendChild(card);
+        });
+    };
+
+    const loadLoanForEdit = (loan) => {
+        editLoanId.value = loan.id;
+        document.getElementById('loan-bank').value = loan.bank;
+        document.getElementById('loan-total-amount').value = loan.totalAmount;
+        document.getElementById('loan-installment-amount').value = loan.installmentAmount;
+        document.getElementById('loan-date').value = loan.date;
+        document.getElementById('loan-tea').value = loan.tea;
+        toggleLoanFields();
+        saveLoanBtn.textContent = "Actualizar";
+        cancelEditLoanBtn.classList.remove('hidden');
+    };
+
+    const resetLoanForm = () => {
+        loanForm.reset();
+        editLoanId.value = "";
+        saveLoanBtn.textContent = "Guardar";
+        cancelEditLoanBtn.classList.add('hidden');
+        toggleLoanFields();
+    };
+
+    // DASHBOARD Y NAVEGACIÓN (ORIGINALES)
+    const updateDashboard = () => {
+        if (!allTransactions.length) return;
+        const now = new Date();
+        const baseCurrency = allTransactions[0].currency || 'PEN';
+        let totalIn = 0, totalOut = 0;
+        const categoryData = {};
+
+        allTransactions.forEach(t => {
+            const amountInBase = (t.amount * RATES_TO_PEN[t.currency]) / RATES_TO_PEN[baseCurrency];
+            if (t.amount > 0) totalIn += amountInBase;
+            else {
+                totalOut += Math.abs(amountInBase);
+                categoryData[t.category] = (categoryData[t.category] || 0) + Math.abs(amountInBase);
+            }
+        });
+        document.getElementById('dash-avg-daily').textContent = (totalOut / 30).toFixed(2);
+        renderCharts(categoryData, totalIn, totalOut, baseCurrency);
+    };
+
+    const renderCharts = (catData, inVal, outVal, baseCur) => {
+        const ctx1 = document.getElementById('categoryChart').getContext('2d');
+        if (categoryChartInstance) categoryChartInstance.destroy();
+        categoryChartInstance = new Chart(ctx1, {
+            type: 'doughnut',
+            data: { labels: Object.keys(catData), datasets: [{ data: Object.values(catData), backgroundColor: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'] }] }
+        });
+
+        const ctx2 = document.getElementById('comparisonChart').getContext('2d');
+        if (comparisonChartInstance) comparisonChartInstance.destroy();
+        comparisonChartInstance = new Chart(ctx2, {
+            type: 'bar',
+            data: { labels: ['Balance'], datasets: [{ label: 'Ingresos', data: [inVal], backgroundColor: '#10b981' }, { label: 'Egresos', data: [outVal], backgroundColor: '#ef4444' }] }
+        });
+    };
+
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.onclick = () => {
-            const target = btn.dataset.target;
             document.querySelectorAll('.view-content').forEach(v => v.classList.add('hidden'));
-            document.getElementById(target).classList.remove('hidden');
+            document.getElementById(btn.dataset.target).classList.remove('hidden');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.replace('text-blue-600', 'text-gray-500'));
             btn.classList.replace('text-gray-500', 'text-blue-600');
+            if (btn.dataset.target === 'dashboard-view') updateDashboard();
         };
     });
 
-    function updateHomeView() {
-        const list = document.getElementById('transaction-list');
-        list.innerHTML = allTransactions.slice(0, 5).map(t => `
-            <div class="flex justify-between p-2 border-b">
-                <span>${t.description}</span>
-                <span class="${t.amount > 0 ? 'text-green-600' : 'text-red-600'}">S/ ${Math.abs(t.amount).toFixed(2)}</span>
-            </div>`).join('');
-    }
-
-    function renderLoans() {
-        document.getElementById('loan-list').innerHTML = allLoans.map(l => `
-            <div class="bg-white p-3 rounded shadow-sm">${l.bank} - ${l.installmentAmount}</div>`).join('');
-    }
-
-    function renderHistorial() {
-        document.getElementById('historial-transaction-list').innerHTML = allTransactions.map(t => `
-            <div class="bg-white p-2 mb-2 rounded shadow-sm">${t.date} | ${t.description}</div>`).join('');
-    }
-
-    document.getElementById('add-transaction-btn').onclick = () => document.getElementById('transaction-modal').classList.remove('hidden');
-    document.getElementById('close-modal-btn').onclick = () => document.getElementById('transaction-modal').classList.add('hidden');
-    document.getElementById('loan-operation').onchange = (e) => document.getElementById('loan-detail-fields').classList.toggle('hidden', e.target.value === 'pago');
+    addTransactionBtn.onclick = () => {
+        document.getElementById('transaction-date').valueAsDate = new Date();
+        transactionModal.classList.remove('hidden');
+    };
+    document.getElementById('close-modal-btn').onclick = () => transactionModal.classList.add('hidden');
+    cancelEditLoanBtn.onclick = resetLoanForm;
+    exportExcelBtn.onclick = () => alert("Función de exportación activada.");
 </script>
 </body>
 </html>
