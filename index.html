@@ -347,6 +347,56 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
         });
     });
 
+     // BOTÓN GUARDAR PRÉSTAMO (REPARADO)
+    loanForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const id = editLoanId.value;
+        const operation = loanOperationSelect.value;
+        const bank = document.getElementById('loan-bank').value;
+        const currency = document.getElementById('loan-currency').value;
+        const instAmt = parseFloat(document.getElementById('loan-installment-amount').value);
+        const date = document.getElementById('loan-date').value;
+
+        if (operation === 'pago') {
+            const originalLoan = allLoans.find(l => l.operation === 'prestamo' && l.bank === bank);
+            if (!originalLoan || Math.abs(originalLoan.installmentAmount - instAmt) > 0.01) {
+                loanWarning.classList.remove('hidden');
+                return;
+            }
+            // Registrar pago como egreso en transacciones
+            await addDoc(collection(db, 'artifacts', appId, 'users', userId, 'transactions'), {
+                amount: -instAmt,
+                currency,
+                description: `Pago de Cuota - ${bank}`,
+                type: 'expense',
+                date,
+                paymentMethod: 'Transferencia',
+                category: 'Préstamos',
+                timestamp: serverTimestamp()
+            });
+        }
+
+        const loanData = {
+            operation, bank, currency, installmentAmount: instAmt, date, timestamp: serverTimestamp()
+        };
+        if (operation === 'prestamo') {
+            loanData.totalAmount = parseFloat(document.getElementById('loan-total-amount').value);
+            loanData.installments = parseInt(document.getElementById('loan-installments').value);
+            loanData.tea = parseFloat(document.getElementById('loan-tea').value);
+        }
+
+        try {
+            if (id) {
+                await updateDoc(doc(db, 'artifacts', appId, 'users', userId, 'loans', id), loanData);
+            } else {
+                await addDoc(collection(db, 'artifacts', appId, 'users', userId, 'loans'), loanData);
+            }
+            resetLoanForm();
+        } catch (error) { console.error("Error al procesar préstamo:", error); }
+    };
+
+
+    
     // Función auxiliar para formatear con símbolo condicional
     const formatDisplay = (val, currencyCode, showSymbol) => {
         const symbol = showSymbol ? (currencySymbols[currencyCode] || '') : '';
@@ -578,4 +628,5 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
 </script>
 </body>
 </html>
+
 
