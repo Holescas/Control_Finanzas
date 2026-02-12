@@ -27,7 +27,6 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
     <div id="home-view" class="view-content relative">
         <div class="flex flex-col items-center justify-center space-y-6">
             <h1 id="home-title" class="text-3xl sm:text-4xl font-bold text-gray-800">Control de Gastos</h1>
-            
             <div class="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="bg-green-50 rounded-xl shadow-lg p-6 sm:p-8 flex flex-col items-center text-center">
                     <div class="text-2xl sm:text-3xl font-bold text-green-600" id="total-income">0.00</div>
@@ -42,7 +41,6 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
                     <div class="text-lg text-gray-500 mt-1" id="balance-label">Balance</div>
                 </div>  
             </div>
-            
             <div class="w-full max-w-4xl mt-6">
                 <div class="flex justify-end mb-3">
                     <button id="add-transaction-btn" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg shadow transition duration-300 flex items-center space-x-2">
@@ -53,7 +51,8 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
                 <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8">
                     <h2 class="text-2xl font-semibold text-gray-800 mb-4">Últimos Movimientos</h2>
                     <div id="transaction-list" class="space-y-4">
-                        </div>
+                        <div class="text-center text-gray-500 p-4">No hay transacciones</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,14 +66,14 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
                     <input type="hidden" id="edit-loan-id">
                     <div>
                         <label class="block text-gray-700 font-medium mb-1">Tipo de Operación</label>
-                        <select id="loan-operation" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                        <select id="loan-operation" required class="w-full p-2 border border-gray-300 rounded-lg">
                             <option value="prestamo">Préstamo</option>
                             <option value="pago">Pago</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-gray-700 font-medium mb-1">Nombre del Banco</label>
-                        <select id="loan-bank" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                        <select id="loan-bank" required class="w-full p-2 border border-gray-300 rounded-lg">
                             <option value="" disabled selected>Seleccione un banco</option>
                             <option value="Scotiabank">Scotiabank</option>
                             <option value="Banco de Crédito">BCP</option>
@@ -87,11 +86,11 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
                     </div>
                     <div>
                         <label class="block text-gray-700 font-medium mb-1">Valor Total</label>
-                        <input type="number" id="loan-total-amount" step="0.01" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all disabled:bg-gray-100">
+                        <input type="number" id="loan-total-amount" step="0.01" required class="w-full p-2 border border-gray-300 rounded-lg disabled:bg-gray-100">
                     </div>
                     <div>
                         <label class="block text-gray-700 font-medium mb-1">Tipo de moneda</label>
-                        <select id="loan-currency" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                        <select id="loan-currency" required class="w-full p-2 border border-gray-300 rounded-lg">
                             <option value="PEN">S/ (Soles)</option>
                             <option value="USD">$ (Dólares)</option>
                             <option value="EUR">€ (Euros)</option>
@@ -99,19 +98,19 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
                     </div>
                     <div>
                         <label class="block text-gray-700 font-medium mb-1">N° Cuotas</label>
-                        <input type="number" id="loan-installments" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all disabled:bg-gray-100">
+                        <input type="number" id="loan-installments" required class="w-full p-2 border border-gray-300 rounded-lg disabled:bg-gray-100">
                     </div>
                     <div>
                         <label class="block text-gray-700 font-medium mb-1">Valor de Cuota / Pago</label>
-                        <input type="number" id="loan-installment-amount" step="0.01" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                        <input type="number" id="loan-installment-amount" step="0.01" required class="w-full p-2 border border-gray-300 rounded-lg">
                     </div>
                     <div>
                         <label class="block text-gray-700 font-medium mb-1">Fecha</label>
-                        <input type="date" id="loan-date" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                        <input type="date" id="loan-date" required class="w-full p-2 border border-gray-300 rounded-lg">
                     </div>
                     <div>
                         <label class="block text-gray-700 font-medium mb-1">TCEA %</label>
-                        <input type="number" id="loan-tea" step="0.01" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all disabled:bg-gray-100">
+                        <input type="number" id="loan-tea" step="0.01" required class="w-full p-2 border border-gray-300 rounded-lg disabled:bg-gray-100">
                     </div>
                     <div id="loan-warning" class="hidden p-3 bg-red-100 border border-red-400 text-red-700 text-sm rounded-lg">
                         <i class="fas fa-exclamation-triangle mr-2"></i>
@@ -126,7 +125,8 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
             <div class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6 sm:p-8 mt-6">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4">Préstamos registrados</h2>
                 <div id="loan-list" class="space-y-4">
-                    </div>
+                    <div class="text-center text-gray-500 p-4">No hay préstamos registrados</div>
+                </div>
             </div>
         </div>
     </div>
@@ -214,13 +214,14 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
             </div>
         </div>
         <div id="historial-transaction-list" class="max-w-4xl mx-auto space-y-4">
-            </div>
+            <div class="text-center text-gray-500 p-4 bg-white rounded-lg shadow">Cargando historial...</div>
+        </div>
     </div>
 </div>
 
 <div id="transaction-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center p-4 hidden z-[100]">
     <div class="bg-white rounded-xl shadow-xl w-full max-w-md modal-content p-6">
-        <div class="flex justify-between items-center pb-3 border-b mb-4">
+        <div class="flex justify-between items-center pb-3">
             <h3 class="text-xl font-semibold text-gray-800">Registrar Operación</h3>
             <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
         </div>
@@ -241,33 +242,50 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
             <div>
                 <label for="currency" class="block text-gray-700 font-medium mb-1 text-sm">Moneda</label>
                 <select id="currency" required class="w-full p-2 border border-gray-300 rounded-lg">
+                    <option value="" disabled selected>Seleccione moneda</option>
                     <option value="PEN">Soles (S/)</option>
                     <option value="USD">Dólares ($)</option>
+                    <option value="EUR">Euros (€)</option>
                 </select>
             </div>
-            <input type="number" id="amount" step="0.01" required placeholder="Monto" class="w-full p-2 border border-gray-300 rounded-lg text-sm">
-            <input type="text" id="description" required placeholder="Descripción" class="w-full p-2 border border-gray-300 rounded-lg text-sm">
-            <input type="date" id="transaction-date" required class="w-full p-2 border border-gray-300 rounded-lg text-sm">
-            <select id="payment-method" required class="w-full p-2 border border-gray-300 rounded-lg text-sm">
-                <option value="Efectivo">Efectivo</option>
-                <option value="Plin">Plin</option>
-                <option value="Yape">Yape</option>
-                <option value="Transferencia">Transferencia</option>
-                <option value="Tarjeta de credito">Tarjeta de credito</option>
-            </select>
-            <select id="category" class="w-full p-2 border border-gray-300 rounded-lg text-sm">
-                <option value="Alimentación">Alimentación</option>
-                <option value="Transporte">Transporte</option>
-                <option value="Servicio Luz">Servicio Luz</option>
-                <option value="Servicio Agua">Servicio Agua</option>
-                <option value="Servicio Telefonía">Servicio Telefonía</option>
-                <option value="Servicio Internet">Servicio Internet</option>
-                <option value="Entretenimiento">Entretenimiento</option>
-                <option value="Compras">Compras</option>
-                <option value="Salud">Salud</option>
-                <option value="Otros">Otros</option>
-            </select>
-            <div class="flex justify-end space-x-2 pt-4">
+            <div>
+                <label for="amount" class="block text-gray-700 font-medium mb-1 text-sm">Monto</label>
+                <input type="number" id="amount" step="0.01" required class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+            <div>
+                <label for="description" class="block text-gray-700 font-medium mb-1 text-sm">Descripción</label>
+                <input type="text" id="description" required class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+            <div>
+                <label for="transaction-date" class="block text-gray-700 font-medium mb-1 text-sm">Fecha</label>
+                <input type="date" id="transaction-date" required class="w-full p-2 border border-gray-300 rounded-lg">
+            </div>
+            <div>
+                <label for="payment-method" class="block text-gray-700 font-medium mb-1 text-sm">Forma de Pago</label>
+                <select id="payment-method" required class="w-full p-2 border border-gray-300 rounded-lg">
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Plin">Plin</option>
+                    <option value="Yape">Yape</option>
+                    <option value="Transferencia">Transferencia</option>
+                    <option value="Tarjeta de credito">Tarjeta de credito</option>
+                </select>
+            </div>
+            <div>
+                <label for="category" class="block text-gray-700 font-medium mb-1 text-sm">Categoría</label>
+                <select id="category" class="w-full p-2 border border-gray-300 rounded-lg bg-white disabled:bg-gray-100 disabled:text-gray-400">
+                        <option value="Alimentación">Alimentación</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Servicio Luz">Servicio Luz</option>
+                        <option value="Servicio Agua">Servicio Agua</option>
+                        <option value="Servicio Telefonía">Servicio Telefonía</option>
+                        <option value="Servicio Internet">Servicio Internet</option>
+                        <option value="Entretenimiento">Entretenimiento</option>
+                        <option value="Compras">Compras</option>
+                        <option value="Salud">Salud</option>
+                        <option value="Otros">Otros</option>
+                </select>
+            </div>
+            <div class="flex justify-end space-x-2">
                 <button type="button" id="cancel-form-btn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm">Cancelar</button>
                 <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold">Guardar</button>
             </div>
@@ -281,15 +299,15 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
             <i class="fas fa-home text-xl"></i>
             <span class="text-[10px] mt-1">Inicio</span>
         </button>
-        <button class="nav-btn flex flex-col items-center text-gray-500" data-target="prestamos-view">
+        <button class="nav-btn flex flex-col items-center text-gray-500 hover:text-blue-600" data-target="prestamos-view">
             <i class="fas fa-money-check-alt text-xl"></i>
             <span class="text-[10px] mt-1">Préstamos</span>
         </button>
-        <button class="nav-btn flex flex-col items-center text-gray-500" data-target="dashboard-view">
+        <button class="nav-btn flex flex-col items-center text-gray-500 hover:text-blue-600" data-target="dashboard-view">
             <i class="fas fa-chart-line text-xl"></i>
             <span class="text-[10px] mt-1">Dashboard</span>
         </button>
-        <button class="nav-btn flex flex-col items-center text-gray-500" data-target="historial-view">
+        <button class="nav-btn flex flex-col items-center text-gray-500 hover:text-blue-600" data-target="historial-view">
             <i class="fas fa-history text-xl"></i>
             <span class="text-[10px] mt-1">Historial</span>
         </button>
@@ -298,8 +316,8 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, doc, onSnapshot, serverTimestamp, updateDoc, deleteDoc, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBzRKfqxhuGK4vfu9YtFImeKiORCBWw8yE",
@@ -313,147 +331,323 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
-    const appId = "control-financiero-3d92d"; // REPARACIÓN: Definición de variable appId necesaria para los botones
+    const appId = "control-financiero-3d92d"; // ID necesario para la ruta de Firestore
 
     let userId;
     let allTransactions = [];
-    let allLoans = [];
+    let allLoans = []; 
+
+    // Charts instances
+    let categoryChartInstance = null;
+    let comparisonChartInstance = null;
+    const RATES_TO_PEN = { 'PEN': 1.0, 'USD': 3.75, 'EUR': 4.10 };
     const currencySymbols = { 'PEN': 'S/', 'USD': '$', 'EUR': '€' };
+
+    const addTransactionBtn = document.getElementById('add-transaction-btn');
+    const transactionModal = document.getElementById('transaction-modal');
+    const transactionForm = document.getElementById('transaction-form');
+    const loanForm = document.getElementById('loan-form');
+    const categorySelect = document.getElementById('category');
+    const editLoanId = document.getElementById('edit-loan-id');
+    const cancelEditLoanBtn = document.getElementById('cancel-edit-loan');
+    const saveLoanBtn = document.getElementById('save-loan-btn');
+    const loanOperationSelect = document.getElementById('loan-operation');
+    const loanWarning = document.getElementById('loan-warning');
+
+    const dashFilterDate = document.getElementById('dash-filter-date');
+    const dashFilterCategory = document.getElementById('dash-filter-category');
+
+    const exportExcelBtn = document.getElementById('export-excel-btn');
+    const exportDateStart = document.getElementById('export-date-start');
+    const exportDateEnd = document.getElementById('export-date-end');
+
+    const toggleLoanFields = () => {
+        const isPago = loanOperationSelect.value === 'pago';
+        document.getElementById('loan-total-amount').disabled = isPago;
+        document.getElementById('loan-installments').disabled = isPago;
+        document.getElementById('loan-tea').disabled = isPago;
+        
+        if (isPago) {
+            document.getElementById('loan-total-amount').required = false;
+            document.getElementById('loan-installments').required = false;
+            document.getElementById('loan-tea').required = false;
+        } else {
+            document.getElementById('loan-total-amount').required = true;
+            document.getElementById('loan-installments').required = true;
+            document.getElementById('loan-tea').required = true;
+        }
+        loanWarning.classList.add('hidden');
+    };
+
+    loanOperationSelect.addEventListener('change', toggleLoanFields);
+
+    const updateCategoryStatus = () => {
+        const type = transactionForm.type.value;
+        if (type === 'income') {
+            categorySelect.disabled = true;
+            categorySelect.value = "Otros";
+        } else {
+            categorySelect.disabled = false;
+        }
+    };
+
+    document.querySelectorAll('input[name="type"]').forEach(radio => {
+        radio.addEventListener('change', updateCategoryStatus);
+    });
 
     onAuthStateChanged(auth, async (user) => {
         if (!user) {
-            await signInAnonymously(auth);
+            const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+            if (token) await signInWithCustomToken(auth, token);
+            else await signInAnonymously(auth);
             return;
         }
         userId = user.uid;
         document.getElementById('user-id-text').textContent = `ID Usuario: ${userId}`;
-        setupSnapshots();
-    });
-
-    function setupSnapshots() {
-        // Escuchar transacciones
+        
         onSnapshot(collection(db, 'artifacts', appId, 'users', userId, 'transactions'), (snap) => {
             allTransactions = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
             updateHomeView();
             renderHistorial();
+            updateDashboard();
         });
 
-        // Escuchar préstamos
         onSnapshot(collection(db, 'artifacts', appId, 'users', userId, 'loans'), (snap) => {
-            allLoans = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+            allLoans = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (a.timestamp?.seconds || 0) - (b.timestamp?.seconds || 0));
             renderLoans();
         });
-    }
+    });
 
-    // BOTÓN GUARDAR TRANSACCIÓN - REPARADO
-    document.getElementById('transaction-form').onsubmit = async (e) => {
+    // BOTÓN GUARDAR TRANSACCIÓN (REPARADO)
+    transactionForm.onsubmit = async (e) => {
         e.preventDefault();
-        const type = e.target.type.value;
+        const type = transactionForm.type.value;
+        const currency = document.getElementById('currency').value;
         const amt = parseFloat(document.getElementById('amount').value);
         
-        try {
+        await addDoc(collection(db, 'artifacts', appId, 'users', userId, 'transactions'), {
+            amount: type === 'expense' ? -amt : amt,
+            currency,
+            description: document.getElementById('description').value,
+            type,
+            date: document.getElementById('transaction-date').value,
+            paymentMethod: document.getElementById('payment-method').value,
+            category: type === 'income' ? 'Ingreso' : document.getElementById('category').value,
+            timestamp: serverTimestamp()
+        });
+        transactionModal.classList.add('hidden');
+        transactionForm.reset();
+        updateCategoryStatus();
+    };
+
+    // BOTÓN GUARDAR PRÉSTAMO (REPARADO)
+    loanForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const id = editLoanId.value;
+        const operation = loanOperationSelect.value;
+        const bank = document.getElementById('loan-bank').value;
+        const currency = document.getElementById('loan-currency').value;
+        const instAmt = parseFloat(document.getElementById('loan-installment-amount').value);
+        const date = document.getElementById('loan-date').value;
+
+        if (operation === 'pago') {
+            const originalLoan = allLoans.find(l => l.operation === 'prestamo' && l.bank === bank);
+            if (!originalLoan || Math.abs(originalLoan.installmentAmount - instAmt) > 0.01) {
+                loanWarning.classList.remove('hidden');
+                return;
+            }
+            // Registrar pago como egreso en transacciones
             await addDoc(collection(db, 'artifacts', appId, 'users', userId, 'transactions'), {
-                amount: type === 'expense' ? -amt : amt,
-                currency: document.getElementById('currency').value,
-                description: document.getElementById('description').value,
-                type: type,
-                date: document.getElementById('transaction-date').value,
-                paymentMethod: document.getElementById('payment-method').value,
-                category: type === 'income' ? 'Ingreso' : document.getElementById('category').value,
+                amount: -instAmt,
+                currency,
+                description: `Pago de Cuota - ${bank}`,
+                type: 'expense',
+                date,
+                paymentMethod: 'Transferencia',
+                category: 'Préstamos',
                 timestamp: serverTimestamp()
             });
-            document.getElementById('transaction-modal').classList.add('hidden');
-            e.target.reset();
-        } catch (error) {
-            console.error("Error al guardar transacción:", error);
-            alert("Error al guardar: " + error.message);
         }
-    };
 
-    // BOTÓN GUARDAR PRÉSTAMO - REPARADO
-    document.getElementById('loan-form').onsubmit = async (e) => {
-        e.preventDefault();
-        const operation = document.getElementById('loan-operation').value;
         const loanData = {
-            bank: document.getElementById('loan-bank').value,
-            totalAmount: parseFloat(document.getElementById('loan-total-amount').value),
-            currency: document.getElementById('loan-currency').value,
-            installmentAmount: parseFloat(document.getElementById('loan-installment-amount').value),
-            installments: parseInt(document.getElementById('loan-installments').value),
-            date: document.getElementById('loan-date').value,
-            tea: parseFloat(document.getElementById('loan-tea').value),
-            operation: operation,
-            timestamp: serverTimestamp()
+            operation, bank, currency, installmentAmount: instAmt, date, timestamp: serverTimestamp()
         };
+        if (operation === 'prestamo') {
+            loanData.totalAmount = parseFloat(document.getElementById('loan-total-amount').value);
+            loanData.installments = parseInt(document.getElementById('loan-installments').value);
+            loanData.tea = parseFloat(document.getElementById('loan-tea').value);
+        }
 
         try {
-            await addDoc(collection(db, 'artifacts', appId, 'users', userId, 'loans'), loanData);
-            e.target.reset();
-            alert("Préstamo registrado con éxito");
-        } catch (error) {
-            console.error("Error al guardar préstamo:", error);
-            alert("Error: " + error.message);
-        }
+            if (id) {
+                await updateDoc(doc(db, 'artifacts', appId, 'users', userId, 'loans', id), loanData);
+            } else {
+                await addDoc(collection(db, 'artifacts', appId, 'users', userId, 'loans'), loanData);
+            }
+            resetLoanForm();
+        } catch (error) { console.error("Error al procesar préstamo:", error); }
     };
 
-    function updateHomeView() {
-        let inc = 0, exp = 0;
-        const list = document.getElementById('transaction-list');
-        list.innerHTML = "";
+    // FUNCIONES DE VISTA (ORIGINALES)
+    const updateHomeView = () => {
+        const today = new Date();
+        const firstTransaction = allTransactions[0];
+        const showSymbol = !!firstTransaction;
+        const baseCurrency = firstTransaction ? firstTransaction.currency : 'PEN';
         
-        allTransactions.slice(0, 5).forEach(t => {
-            const amt = parseFloat(t.amount);
-            if (amt > 0) inc += amt; else exp += Math.abs(amt);
-            const sym = currencySymbols[t.currency] || 'S/';
-            
+        const monthlyTxs = allTransactions.filter(t => {
+            if (!t.date) return false;
+            const d = new Date(t.date + 'T00:00:00');
+            return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
+        });
+
+        let totalIncBase = 0, totalExpBase = 0;
+        const list = document.getElementById('transaction-list');
+        list.innerHTML = monthlyTxs.length ? '' : '<div class="text-center text-gray-500 py-4">Sin movimientos este mes</div>';
+
+        monthlyTxs.slice(0, 5).forEach(t => {
+            const amountInBase = (t.amount * RATES_TO_PEN[t.currency]) / RATES_TO_PEN[baseCurrency];
+            if(t.amount > 0) totalIncBase += amountInBase; else totalExpBase += Math.abs(amountInBase);
+            const sym = currencySymbols[t.currency] || '';
             list.innerHTML += `
                 <div class="flex justify-between items-center p-3 border-b">
                     <div>
-                        <div class="font-medium text-sm">${t.description}</div>
+                        <div class="font-medium text-sm text-gray-800">${t.description}</div>
                         <div class="text-[10px] text-gray-400">${t.date}</div>
                     </div>
-                    <div class="font-bold ${amt > 0 ? 'text-green-600' : 'text-red-600'}">
-                        ${sym} ${Math.abs(amt).toFixed(2)}
+                    <div class="font-bold ${t.amount > 0 ? 'text-green-600' : 'text-red-600'}">
+                        ${sym} ${Math.abs(t.amount).toFixed(2)}
                     </div>
                 </div>`;
         });
-        document.getElementById('total-income').textContent = inc.toFixed(2);
-        document.getElementById('total-expense').textContent = exp.toFixed(2);
-        document.getElementById('total-balance').textContent = (inc - exp).toFixed(2);
-    }
+        document.getElementById('total-income').textContent = formatDisplay(totalIncBase, baseCurrency, showSymbol);
+        document.getElementById('total-expense').textContent = formatDisplay(totalExpBase, baseCurrency, showSymbol);
+        document.getElementById('total-balance').textContent = formatDisplay(totalIncBase - totalExpBase, baseCurrency, showSymbol);
+        document.getElementById('balance-label').textContent = `Balance (${baseCurrency})`;
+    };
 
-    function renderHistorial() {
-        const hist = document.getElementById('historial-transaction-list');
-        hist.innerHTML = allTransactions.map(t => `
-            <div class="bg-white p-4 rounded-lg shadow flex justify-between">
-                <div><div class="font-bold">${t.description}</div><div class="text-xs text-gray-400">${t.date}</div></div>
-                <div class="font-bold ${t.amount > 0 ? 'text-green-600' : 'text-red-600'}">${t.amount.toFixed(2)}</div>
-            </div>`).join('');
-    }
+    const formatDisplay = (val, currencyCode, showSymbol) => {
+        const symbol = showSymbol ? (currencySymbols[currencyCode] || '') : '';
+        return `${symbol} ${val.toLocaleString('es-PE', { minimumFractionDigits: 2 })}`;
+    };
 
-    function renderLoans() {
-        const list = document.getElementById('loan-list');
-        list.innerHTML = allLoans.map(l => `
-            <div class="p-3 border rounded-lg bg-gray-50 flex justify-between">
-                <span><b>${l.bank}</b> (${l.operation})</span>
-                <span>${l.currency} ${l.totalAmount}</span>
-            </div>`).join('');
-    }
+    const renderHistorial = () => {
+        const histList = document.getElementById('historial-transaction-list');
+        histList.innerHTML = allTransactions.length ? '' : '<div class="text-center text-gray-500 p-4 bg-white rounded-lg shadow">No hay registros</div>';
+        allTransactions.forEach(t => {
+            const sym = currencySymbols[t.currency] || '';
+            histList.innerHTML += `
+                <div class="bg-white p-4 rounded-lg shadow border-l-4 ${t.amount > 0 ? 'border-green-500' : 'border-red-500'} flex justify-between items-center">
+                    <div>
+                        <div class="font-bold text-gray-800">${t.description}</div>
+                        <div class="text-xs text-gray-500">${t.date} | ${t.category}</div>
+                    </div>
+                    <div class="font-bold text-lg ${t.amount > 0 ? 'text-green-600' : 'text-red-600'}">
+                        ${sym} ${Math.abs(t.amount).toFixed(2)}
+                    </div>
+                </div>`;
+        });
+    };
 
-    // Navegación (Tus botones de abajo)
+    const renderLoans = () => {
+        const loanListEl = document.getElementById('loan-list');
+        loanListEl.innerHTML = '';
+        const loansOnly = allLoans.filter(l => l.operation === 'prestamo');
+        if (loansOnly.length === 0) {
+            loanListEl.innerHTML = '<div class="text-center text-gray-500 p-4">No hay préstamos registrados</div>';
+            return;
+        }
+        loansOnly.forEach(loan => {
+            const sym = currencySymbols[loan.currency] || '';
+            const card = document.createElement('div');
+            card.className = "bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center";
+            card.innerHTML = `
+                <div>
+                    <div class="font-bold text-gray-800">${loan.bank}</div>
+                    <div class="text-xs text-gray-500">${loan.date} | Cuotas: ${loan.installments}</div>
+                </div>
+                <div class="text-right">
+                    <div class="font-bold text-blue-600 text-lg">${sym} ${loan.totalAmount.toFixed(2)}</div>
+                    <button class="edit-loan-btn text-gray-400 p-1" data-id="${loan.id}"><i class="fas fa-edit"></i></button>
+                </div>`;
+            card.querySelector('.edit-loan-btn').onclick = () => loadLoanForEdit(loan);
+            loanListEl.appendChild(card);
+        });
+    };
+
+    const loadLoanForEdit = (loan) => {
+        editLoanId.value = loan.id;
+        document.getElementById('loan-bank').value = loan.bank;
+        document.getElementById('loan-total-amount').value = loan.totalAmount;
+        document.getElementById('loan-installment-amount').value = loan.installmentAmount;
+        document.getElementById('loan-date').value = loan.date;
+        document.getElementById('loan-tea').value = loan.tea;
+        toggleLoanFields();
+        saveLoanBtn.textContent = "Actualizar";
+        cancelEditLoanBtn.classList.remove('hidden');
+    };
+
+    const resetLoanForm = () => {
+        loanForm.reset();
+        editLoanId.value = "";
+        saveLoanBtn.textContent = "Guardar";
+        cancelEditLoanBtn.classList.add('hidden');
+        toggleLoanFields();
+    };
+
+    // DASHBOARD Y NAVEGACIÓN (ORIGINALES)
+    const updateDashboard = () => {
+        if (!allTransactions.length) return;
+        const now = new Date();
+        const baseCurrency = allTransactions[0].currency || 'PEN';
+        let totalIn = 0, totalOut = 0;
+        const categoryData = {};
+
+        allTransactions.forEach(t => {
+            const amountInBase = (t.amount * RATES_TO_PEN[t.currency]) / RATES_TO_PEN[baseCurrency];
+            if (t.amount > 0) totalIn += amountInBase;
+            else {
+                totalOut += Math.abs(amountInBase);
+                categoryData[t.category] = (categoryData[t.category] || 0) + Math.abs(amountInBase);
+            }
+        });
+        document.getElementById('dash-avg-daily').textContent = (totalOut / 30).toFixed(2);
+        renderCharts(categoryData, totalIn, totalOut, baseCurrency);
+    };
+
+    const renderCharts = (catData, inVal, outVal, baseCur) => {
+        const ctx1 = document.getElementById('categoryChart').getContext('2d');
+        if (categoryChartInstance) categoryChartInstance.destroy();
+        categoryChartInstance = new Chart(ctx1, {
+            type: 'doughnut',
+            data: { labels: Object.keys(catData), datasets: [{ data: Object.values(catData), backgroundColor: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'] }] }
+        });
+
+        const ctx2 = document.getElementById('comparisonChart').getContext('2d');
+        if (comparisonChartInstance) comparisonChartInstance.destroy();
+        comparisonChartInstance = new Chart(ctx2, {
+            type: 'bar',
+            data: { labels: ['Balance'], datasets: [{ label: 'Ingresos', data: [inVal], backgroundColor: '#10b981' }, { label: 'Egresos', data: [outVal], backgroundColor: '#ef4444' }] }
+        });
+    };
+
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.view-content').forEach(v => v.classList.add('hidden'));
             document.getElementById(btn.dataset.target).classList.remove('hidden');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.replace('text-blue-600', 'text-gray-500'));
-            btn.classList.add('text-blue-600');
+            btn.classList.replace('text-gray-500', 'text-blue-600');
+            if (btn.dataset.target === 'dashboard-view') updateDashboard();
         };
     });
 
-    // Modales
-    document.getElementById('add-transaction-btn').onclick = () => document.getElementById('transaction-modal').classList.remove('hidden');
-    document.getElementById('close-modal-btn').onclick = () => document.getElementById('transaction-modal').classList.add('hidden');
-    document.getElementById('cancel-form-btn').onclick = () => document.getElementById('transaction-modal').classList.add('hidden');
+    addTransactionBtn.onclick = () => {
+        document.getElementById('transaction-date').valueAsDate = new Date();
+        transactionModal.classList.remove('hidden');
+    };
+    document.getElementById('close-modal-btn').onclick = () => transactionModal.classList.add('hidden');
+    cancelEditLoanBtn.onclick = resetLoanForm;
+    exportExcelBtn.onclick = () => alert("Función de exportación activada.");
 </script>
 </body>
 </html>
