@@ -523,7 +523,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
                         <div class="text-[10px] text-gray-400">${t.date} | ${t.currency}</div>
                     </div>
                     <div class="font-bold ${t.amount > 0 ? 'text-green-600' : 'text-red-600'}">
-                        ${t.amount > 0 ? '+' : ''}${sym} ${Math.abs(t.amount).toFixed(2)}
+                        ${t.amount > 0 ? '+' : '-'}${sym} ${Math.abs(t.amount).toFixed(2)}
                     </div>
                 </div>`;
         });
@@ -658,7 +658,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
                         <div class="text-xs text-gray-500">${t.date} | ${t.category} | ${t.paymentMethod}</div>
                     </div>
                     <div class="font-bold text-lg ${t.amount > 0 ? 'text-green-600' : 'text-red-600'}">
-                        ${t.amount > 0 ? '+' : ''}${sym} ${Math.abs(t.amount).toFixed(2)}
+                        ${t.amount > 0 ? '+' : '-'}${sym} ${Math.abs(t.amount).toFixed(2)}
                     </div>
                 </div>`;
         });
@@ -852,4 +852,5 @@ document.getElementById('clear-all-data-btn').onclick = async () => {
 </script>
 </body>
 </html>
+
 
