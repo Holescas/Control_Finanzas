@@ -333,16 +333,16 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     
-    // Configuración Real de Firebase integrada
-    const firebaseConfig = {
+     const firebaseConfig = {
         apiKey: "AIzaSyBzRKfqxhuGK4vfu9YtFImeKiORCBWw8yE",
         authDomain: "control-financiero-3d92d.firebaseapp.com",
         projectId: "control-financiero-3d92d",
         storageBucket: "control-financiero-3d92d.appspot.com",
         messagingSenderId: "708092554889",
-        appId: "control-financiero-3d92d"
-  
-const app = initializeApp(firebaseConfig);
+        appId: "1:708092554889:web:65982feecbd80bdb51e058"
+    };
+
+    const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
     const appId = "control-financiero-3d92d"; // ID necesario para la ruta de Firestore
