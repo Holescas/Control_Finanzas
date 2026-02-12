@@ -160,7 +160,6 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
                     <option value="Entretenimiento">Entretenimiento</option>
                     <option value="Compras">Compras</option>
                     <option value="Salud">Salud</option>
-                    <option value="Préstamos">Préstamos</option>
                     <option value="Otros">Otros</option>
                 </select>
             </div>
@@ -297,7 +296,6 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
                         <option value="Entretenimiento">Entretenimiento</option>
                         <option value="Compras">Compras</option>
                         <option value="Salud">Salud</option>
-                        <option value="Préstamos">Préstamos</option>
                         <option value="Otros">Otros</option>
                 </select>
             </div>
@@ -335,6 +333,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     
+    // Configuración Real de Firebase integrada
     const firebaseConfig = {
         apiKey: "AIzaSyBzRKfqxhuGK4vfu9YtFImeKiORCBWw8yE",
         authDomain: "control-financiero-3d92d.firebaseapp.com",
@@ -439,7 +438,46 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
     dashFilterDate.addEventListener('change', () => updateDashboard());
     dashFilterCategory.addEventListener('change', () => updateDashboard());
 
-    // FUNCIONALIDAD EXPORTAR EXCEL (CSV)
+ // BOTÓN GUARDAR TRANSACCIÓN (REPARADO)
+    transactionForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const type = transactionForm.type.value;
+        const currency = document.getElementById('currency').value;
+        const amt = parseFloat(document.getElementById('amount').value);
+        
+        await addDoc(collection(db, 'artifacts', appId, 'users', userId, 'transactions'), {
+            amount: type === 'expense' ? -amt : amt,
+            currency,
+            description: document.getElementById('description').value,
+            type,
+            date: document.getElementById('transaction-date').value,
+            paymentMethod: document.getElementById('payment-method').value,
+            category: type === 'income' ? 'Ingreso' : document.getElementById('category').value,
+            timestamp: serverTimestamp()
+        });
+        transactionModal.classList.add('hidden');
+        transactionForm.reset();
+        updateCategoryStatus();
+    };
+
+    // BOTÓN GUARDAR PRÉSTAMO (REPARADO)
+    loanForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const id = editLoanId.value;
+        const operation = loanOperationSelect.value;
+        const bank = document.getElementById('loan-bank').value;
+        const currency = document.getElementById('loan-currency').value;
+        const instAmt = parseFloat(document.getElementById('loan-installment-amount').value);
+        const date = document.getElementById('loan-date').value;
+
+        if (operation === 'pago') {
+            const originalLoan = allLoans.find(l => l.operation === 'prestamo' && l.bank === bank);
+            if (!originalLoan || Math.abs(originalLoan.installmentAmount - instAmt) > 0.01) {
+                loanWarning.classList.remove('hidden');
+                return;
+            }
+
+ // FUNCIONALIDAD EXPORTAR EXCEL (CSV)
     exportExcelBtn.onclick = () => {
         const start = exportDateStart.value;
         const end = exportDateEnd.value;
