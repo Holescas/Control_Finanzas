@@ -334,7 +334,7 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, serverTimestamp, getDocs, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     
      const firebaseConfig = {
         apiKey: "AIzaSyBzRKfqxhuGK4vfu9YtFImeKiORCBWw8yE",
@@ -826,6 +826,30 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
             }
         };
     });
+    // Función para limpiar toda la base de datos del usuario
+document.getElementById('clear-all-data-btn').onclick = async () => {
+    const confirmDelete = confirm("¿Estás seguro de que deseas borrar TODA la información registrada? Esta acción no se puede deshacer.");
+    if (!confirmDelete) return;
+
+    try {
+        const batch = writeBatch(db);
+        
+        // Obtener y preparar para borrar transacciones y préstamos
+        const txSnap = await getDocs(collection(db, 'artifacts', appId, 'users', userId, 'transactions'));
+        txSnap.forEach((doc) => batch.delete(doc.ref));
+
+        const loanSnap = await getDocs(collection(db, 'artifacts', appId, 'users', userId, 'loans'));
+        loanSnap.forEach((doc) => batch.delete(doc.ref));
+
+        await batch.commit(); // Ejecuta el borrado masivo
+        alert("Información eliminada correctamente.");
+        location.reload(); // Recarga la página para iniciar de cero
+    } catch (error) {
+        console.error("Error al borrar datos:", error);
+        alert("Hubo un error al intentar borrar los datos.");
+    }
+};
 </script>
 </body>
 </html>
+
